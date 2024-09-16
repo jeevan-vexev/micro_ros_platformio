@@ -63,8 +63,8 @@ class Build:
         self.download_dev_environment()
         self.build_dev_environment()
         self.download_mcu_environment()
-        # self.build_mcu_environment(meta, toolchain, user_meta)
-        # self.package_mcu_library()
+        self.build_mcu_environment(meta, toolchain, user_meta)
+        self.package_mcu_library()
 
     def ignore_package(self, name):
         for p in self.mcu_packages:
@@ -167,6 +167,9 @@ class Build:
 
     def build_mcu_environment(self, meta_file, toolchain_file, user_meta = ""):
         print("Building micro-ROS library")
+        print(f"Meta: {meta_file}")
+        print(f"Toolchain: {toolchain_file}")
+        print(f"User Meta: {user_meta}")
 
         common_meta_path = self.library_folder + '/metas/common.meta'
         colcon_command = '. {} && colcon build --merge-install --packages-ignore-regex=.*_cpp --metas {} {} {} --cmake-args -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=OFF  -DTHIRDPARTY=ON  -DBUILD_SHARED_LIBS=OFF  -DBUILD_TESTING=OFF  -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE={} -DPython3_EXECUTABLE=`which python`'.format(self.python_env, common_meta_path, meta_file, user_meta, toolchain_file)
