@@ -28,7 +28,7 @@ boards_metas = {
 project_options = env.GetProjectConfig().items(env=env["PIOENV"], as_dict=True)
 main_path = os.path.realpath(".")
 global_env = DefaultEnvironment()
-board = env['BOARD']
+board = env['BOARD'] if 'BOARD' in env else 'host'
 framework = env['PIOFRAMEWORK'][0]
 extra_packages_path = "{}/extra_packages".format(env['PROJECT_DIR'])
 
