@@ -62,9 +62,9 @@ class Build:
         self.check_env()
         self.download_dev_environment()
         self.build_dev_environment()
-        self.download_mcu_environment()
-        self.build_mcu_environment(meta, toolchain, user_meta)
-        self.package_mcu_library()
+        # self.download_mcu_environment()
+        # self.build_mcu_environment(meta, toolchain, user_meta)
+        # self.package_mcu_library()
 
     def ignore_package(self, name):
         for p in self.mcu_packages:
