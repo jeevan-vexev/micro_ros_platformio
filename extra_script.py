@@ -29,7 +29,7 @@ project_options = env.GetProjectConfig().items(env=env["PIOENV"], as_dict=True)
 main_path = os.path.realpath(".")
 global_env = DefaultEnvironment()
 board = env['BOARD'] if 'BOARD' in env else 'host'
-framework = env['PIOFRAMEWORK'][0]
+framework = env['PIOFRAMEWORK'][0] if 'BOARD' in env else 'host'
 extra_packages_path = "{}/extra_packages".format(env['PROJECT_DIR'])
 
 selected_board_meta = boards_metas[board] if board in boards_metas else "colcon.meta"
