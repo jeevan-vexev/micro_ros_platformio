@@ -37,9 +37,7 @@ selected_board_meta = boards_metas[board] if board in boards_metas else "colcon.
 if board == 'host':
     microros_distro = env.get("microros_distro", "iron")
     microros_transport = env.get("microros_transport", "serial")
-    microros_user_meta = "{}/{}".format(
-        env['PROJECT_DIR'], env.get("microros_user_meta", "")
-    )
+    microros_user_meta = ""
 
 else:
     # Retrieve the required transport. Default iron
