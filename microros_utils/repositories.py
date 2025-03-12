@@ -17,12 +17,13 @@ class Package:
             os.utime(ignore_path, None)
 
 class Repository:
-    def __init__(self, name, url, distribution, branch=None):
+    def __init__(self, name, url, distribution, branch=None, githash=None):
         self.name = name
         self.url = url
         self.distribution = distribution
         self.branch = distribution if branch is None else branch
         self.path = None
+        self.githash = None
 
     def clone(self, folder):
         self.path = folder + "/" + self.name
@@ -35,12 +36,23 @@ class Repository:
                 sys.exit(1)
             return
 
-        command = "git clone -b {} {} {}".format(self.branch, self.url, self.path)
+        command = "git clone -b {} {} {}".format(self.branch, self.url, self.path)      
         result = run_cmd(command)
 
         if 0 != result.returncode:
             print("{} clone failed: \n{}".format(self.name, result.stderr.decode("utf-8")))
             sys.exit(1)
+        
+        # Jeevan: Added this to be able to pin microROS repositories
+        if self.githash:
+            command = f"cd {self.path} && git checkout {self.githash}"
+                        
+            result = run_cmd(command)
+
+            if 0 != result.returncode:
+                print("{} checkout failed: \n{}".format(self.name, result.stderr.decode("utf-8")))
+                sys.exit(1)
+
 
     def get_packages(self):
         packages = []
@@ -118,7 +130,7 @@ class Sources:
             Repository("micro_ros_utilities", "https://github.com/micro-ROS/micro_ros_utilities", "humble"),
             Repository("rcutils", "https://github.com/micro-ROS/rcutils", "humble"),
             Repository("micro_ros_msgs", "https://github.com/micro-ROS/micro_ros_msgs", "humble"),
-            Repository("rmw-microxrcedds", "https://github.com/micro-ROS/rmw_microxrcedds#1242ab5", "humble"),
+            Repository("rmw-microxrcedds", "https://github.com/micro-ROS/rmw_microxrcedds", "humble", githash="1242ab5"),
             Repository("rosidl_typesupport", "https://github.com/micro-ROS/rosidl_typesupport", "humble"),
             Repository("rosidl_typesupport_microxrcedds", "https://github.com/micro-ROS/rosidl_typesupport_microxrcedds", "humble"),
             Repository("rosidl", "https://github.com/ros2/rosidl", "humble"),
