@@ -125,7 +125,7 @@ class Sources:
         'humble': [
             Repository("micro-CDR", "https://github.com/eProsima/micro-CDR", "humble", "ros2"),
             Repository("Micro-XRCE-DDS-Client", "https://github.com/eProsima/Micro-XRCE-DDS-Client", "humble", "ros2"),
-            Repository("rcl", "https://github.com/micro-ROS/rcl", "humble"),
+            Repository("rcl", "https://github.com/micro-ROS/rcl", "humble", githash="246e58f"),
             Repository("rclc", "https://github.com/ros2/rclc", "humble"),
             Repository("micro_ros_utilities", "https://github.com/micro-ROS/micro_ros_utilities", "humble"),
             Repository("rcutils", "https://github.com/micro-ROS/rcutils", "humble"),
