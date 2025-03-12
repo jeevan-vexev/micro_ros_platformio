@@ -46,17 +46,10 @@ class Repository:
         # Jeevan: Added this to be able to pin microROS repositories
         if self.githash:
             command = f"cd {self.path} && git checkout {self.githash}"
-            
             result = run_cmd(command)
-            
-            print("Jeevan was here")
-
             if 0 != result.returncode:
                 print("{} checkout failed: \n{}".format(self.name, result.stderr.decode("utf-8")))
                 sys.exit(1)
-                
-            
-
 
     def get_packages(self):
         packages = []
