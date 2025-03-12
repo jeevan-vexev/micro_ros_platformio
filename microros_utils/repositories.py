@@ -118,7 +118,7 @@ class Sources:
             Repository("micro_ros_utilities", "https://github.com/micro-ROS/micro_ros_utilities", "humble"),
             Repository("rcutils", "https://github.com/micro-ROS/rcutils", "humble"),
             Repository("micro_ros_msgs", "https://github.com/micro-ROS/micro_ros_msgs", "humble"),
-            Repository("rmw-microxrcedds", "https://github.com/micro-ROS/rmw_microxrcedds/commit/1242ab5a1af6f9d3b2893fd0d9cd3ff98ca2b004", "humble"),
+            Repository("rmw-microxrcedds", "https://github.com/micro-ROS/rmw_microxrcedds#1242ab5", "humble"),
             Repository("rosidl_typesupport", "https://github.com/micro-ROS/rosidl_typesupport", "humble"),
             Repository("rosidl_typesupport_microxrcedds", "https://github.com/micro-ROS/rosidl_typesupport_microxrcedds", "humble"),
             Repository("rosidl", "https://github.com/ros2/rosidl", "humble"),
