@@ -23,7 +23,7 @@ class Repository:
         self.distribution = distribution
         self.branch = distribution if branch is None else branch
         self.path = None
-        self.githash = None
+        self.githash = githash
 
     def clone(self, folder):
         self.path = folder + "/" + self.name
