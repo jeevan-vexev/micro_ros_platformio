@@ -1,7 +1,10 @@
 #include <Arduino.h>
 
 #include <sys/time.h>
-#define micro_rollover_useconds 4294967295
+// micros() is a 32-bit count, so it wraps every 2^32 us exactly. One less leaves this clock
+// a microsecond further behind millis() at every wrap, and from the second wrap (~143 min)
+// the XRCE serial read loop can measure 0 ms for every 1 ms read and never time out.
+#define micro_rollover_useconds 4294967296ULL
 
 #if !defined(_POSIX_TIMERS) || !_POSIX_TIMERS
 

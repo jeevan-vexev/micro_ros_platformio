@@ -29,7 +29,12 @@ class Repository:
         self.path = folder + "/" + self.name
         # TODO(pablogs) ensure that git is installed
         if os.path.exists(self.path):
-            command = f"cd {self.path} && git pull {self.url} {self.branch}"
+            if self.githash:
+                # A pinned checkout is a detached HEAD: pulling would merge the branch tip into it
+                # and drop the pin, so fetch and check the pinned commit out again instead.
+                command = f"cd {self.path} && git fetch {self.url} {self.branch} && git checkout {self.githash}"
+            else:
+                command = f"cd {self.path} && git pull {self.url} {self.branch}"
             result = run_cmd(command)
             if 0 != result.returncode:
                 print(f"{self.name} pull failed: \n{result.stderr.decode('utf-8')}")
@@ -166,28 +171,30 @@ class Sources:
             Repository("ros2_tracing", "https://github.com/ros2/ros2_tracing", "iron"),
         ],
         'jazzy': [
-            Repository("micro-CDR", "https://github.com/eProsima/micro-CDR", "jazzy", "ros2"),
-            Repository("Micro-XRCE-DDS-Client", "https://github.com/eProsima/Micro-XRCE-DDS-Client", "jazzy", "ros2"),
-            Repository("rcl", "https://github.com/micro-ROS/rcl", "jazzy"),
-            Repository("rclc", "https://github.com/ros2/rclc", "jazzy"),
-            Repository("micro_ros_utilities", "https://github.com/micro-ROS/micro_ros_utilities", "jazzy"),
-            Repository("rcutils", "https://github.com/micro-ROS/rcutils", "jazzy"),
-            Repository("micro_ros_msgs", "https://github.com/micro-ROS/micro_ros_msgs", "jazzy"),
-            Repository("rmw-microxrcedds", "https://github.com/micro-ROS/rmw-microxrcedds", "jazzy"),
-            Repository("rosidl_typesupport", "https://github.com/micro-ROS/rosidl_typesupport", "jazzy"),
-            Repository("rosidl_typesupport_microxrcedds", "https://github.com/micro-ROS/rosidl_typesupport_microxrcedds", "jazzy"),
-            Repository("rosidl", "https://github.com/ros2/rosidl", "jazzy"),
-            Repository("rosidl_dynamic_typesupport", "https://github.com/ros2/rosidl_dynamic_typesupport", "jazzy"),
-            Repository("rosidl_core", "https://github.com/ros2/rosidl_core", "jazzy"),
-            Repository("rmw", "https://github.com/ros2/rmw", "jazzy"),
-            Repository("rcl_interfaces", "https://github.com/ros2/rcl_interfaces", "jazzy"),
-            Repository("rosidl_defaults", "https://github.com/ros2/rosidl_defaults", "jazzy"),
-            Repository("unique_identifier_msgs", "https://github.com/ros2/unique_identifier_msgs", "jazzy"),
-            Repository("common_interfaces", "https://github.com/ros2/common_interfaces", "jazzy"),
-            Repository("test_interface_files", "https://github.com/ros2/test_interface_files", "jazzy"),
-            Repository("rmw_implementation", "https://github.com/ros2/rmw_implementation", "jazzy"),
-            Repository("rcl_logging", "https://github.com/ros2/rcl_logging", "jazzy"),
-            Repository("ros2_tracing", "https://github.com/ros2/ros2_tracing", "jazzy"),
+            # Pinned to the commits vxwave's firmware was built and tested with (Oct 2026), so a
+            # rebuild of libmicroros does not silently pick up new upstream commits.
+            Repository("micro-CDR", "https://github.com/eProsima/micro-CDR", "jazzy", "ros2", githash="ed4fd513a24a"),
+            Repository("Micro-XRCE-DDS-Client", "https://github.com/eProsima/Micro-XRCE-DDS-Client", "jazzy", "ros2", githash="83f129a80770"),
+            Repository("rcl", "https://github.com/micro-ROS/rcl", "jazzy", githash="93026ef7d1a5"),
+            Repository("rclc", "https://github.com/ros2/rclc", "jazzy", githash="45ef3de56758"),
+            Repository("micro_ros_utilities", "https://github.com/micro-ROS/micro_ros_utilities", "jazzy", githash="9f35a036f5c8"),
+            Repository("rcutils", "https://github.com/micro-ROS/rcutils", "jazzy", githash="eb7baaa0a38e"),
+            Repository("micro_ros_msgs", "https://github.com/micro-ROS/micro_ros_msgs", "jazzy", githash="b1ef85201e55"),
+            Repository("rmw-microxrcedds", "https://github.com/micro-ROS/rmw-microxrcedds", "jazzy", githash="cbc4a1e60aea"),
+            Repository("rosidl_typesupport", "https://github.com/micro-ROS/rosidl_typesupport", "jazzy", githash="352f208e29f3"),
+            Repository("rosidl_typesupport_microxrcedds", "https://github.com/micro-ROS/rosidl_typesupport_microxrcedds", "jazzy", githash="9672e11175e6"),
+            Repository("rosidl", "https://github.com/ros2/rosidl", "jazzy", githash="85fa592b698b"),
+            Repository("rosidl_dynamic_typesupport", "https://github.com/ros2/rosidl_dynamic_typesupport", "jazzy", githash="cb8c54d12c67"),
+            Repository("rosidl_core", "https://github.com/ros2/rosidl_core", "jazzy", githash="c6eb22b0e77c"),
+            Repository("rmw", "https://github.com/ros2/rmw", "jazzy", githash="8cb94a87cf3f"),
+            Repository("rcl_interfaces", "https://github.com/ros2/rcl_interfaces", "jazzy", githash="7aa3caf43377"),
+            Repository("rosidl_defaults", "https://github.com/ros2/rosidl_defaults", "jazzy", githash="9749b5919add"),
+            Repository("unique_identifier_msgs", "https://github.com/ros2/unique_identifier_msgs", "jazzy", githash="901599ee92c2"),
+            Repository("common_interfaces", "https://github.com/ros2/common_interfaces", "jazzy", githash="a941f14bb318"),
+            Repository("test_interface_files", "https://github.com/ros2/test_interface_files", "jazzy", githash="1c92e082fe14"),
+            Repository("rmw_implementation", "https://github.com/ros2/rmw_implementation", "jazzy", githash="835ff87c676c"),
+            Repository("rcl_logging", "https://github.com/ros2/rcl_logging", "jazzy", githash="727920c2592b"),
+            Repository("ros2_tracing", "https://github.com/ros2/ros2_tracing", "jazzy", githash="615d3dc1ea9c"),
         ],
         'rolling': [
             Repository("micro-CDR", "https://github.com/eProsima/micro-CDR", "rolling", "ros2"),
